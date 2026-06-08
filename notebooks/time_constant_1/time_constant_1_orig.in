@@ -1,0 +1,6 @@
+Time Constant 1
+Vs in 0 DC 5
+R1 in vb 5000
+C1 vb 0 $C IC=1
+.TRAN 0.5u 2500u UIC
+.END

@@ -2,12 +2,21 @@ import subprocess
 import numpy as np
 import os
 
-def replace_strings_1(src:str, dst:str, replacements:list):
-    with open(src, 'r') as f:
+import re
+
+def replace_strings_1(src, dst, replacements):
+    mapping = dict(replacements)
+
+    with open(src) as f:
         content = f.read()
-    for old, new in replacements:
-        content = content.replace(old, new)
-    with open(dst, 'w') as f:
+
+    content = re.sub(
+        r"\$[A-Z_]+",
+        lambda m: mapping.get(m.group(0), m.group(0)),
+        content
+    )
+    content = content.replace('\r\n', '\n')
+    with open(dst, "w") as f:
         f.write(content)
 
 def run_ngspice(cir_path:str):  
