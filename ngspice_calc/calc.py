@@ -17,3 +17,12 @@ def avg_rms(t, v, t_start=None, t_end=None):
     avg = np.trapezoid(v_,  t_) / (t_[-1] - t_[0])
     rms = np.sqrt(np.trapezoid(v_**2, t_) / (t_[-1] - t_[0]))
     return avg, rms
+
+def min_max(t, v, t_start=None, t_end=None):
+    if t_start is None: t_start=t[0]
+    if t_end is None: t_end=t[-1]
+    mask = (t>=t_start) & (t<t_end)
+    v_ = v[mask]
+    return v_.min(), v_.max()
+
+

@@ -1,0 +1,13 @@
+Buck Converter CCM
+Vin in 0 DC $Vin
+Vpwm gate 0 PULSE(0 5 0 1n 1n 0.0000400000 0.0001000000)
+S1 in sw gate 0 SWMOD
+D1 0 sw DMOD
+L1 sw out 0.6e-3 IC=0
+C1 out 0 50e-6 IC=0
+RL out 0 2.5
+.MODEL SWMOD SW(Ron=0.01 Roff=1MEG Vt=2.5)
+.MODEL DMOD D(Is=1n N=1 Rs=0.01)
+.TRAN 0.0000002000 0.005000 UIC
+.SAVE v(out) v(sw) i(l1) i(vin)
+.END
