@@ -1,0 +1,24 @@
+Common Emitter Amplifier
+* Supply and bias
+Vcc vcc 0 DC 12
+Rb1 vcc base 100k
+Rb2 base 0 22k
+Rc  vcc col 3.3k
+Re  emit 0 1k
+
+* BJT
+Q1 col base emit BC547
+
+* Input signal (AC coupled)
+Vin sig 0 SIN(0 0.01 10k)
+Cin sig base 10u
+Cout col out 10u
+RL  out 0 10k
+
+.MODEL BC547 NPN(Is=1e-14 Bf=200 Vaf=100)
+
+.OP
+.TRAN 0.00000050 0.001000
+
+.SAVE v(base) v(col) v(emit) v(out)
+.END

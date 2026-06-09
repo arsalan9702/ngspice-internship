@@ -1,5 +1,5 @@
 Buck Converter CCM
-Vin in 0 DC $Vin
+Vin in 0 DC 100
 Vpwm gate 0 PULSE(0 5 0 1n 1n 0.0000400000 0.0001000000)
 S1 in sw gate 0 SWMOD
 D1 0 sw DMOD
