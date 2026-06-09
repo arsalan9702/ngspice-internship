@@ -1,0 +1,8 @@
+RC Low Pass Filter
+Vin in 0 AC $VIN
+R1 in out $R
+C1 out 0 $C
+
+.AC DEC 100 $FSTART $FSTOP
+.SAVE $SAVE_VARS
+.END

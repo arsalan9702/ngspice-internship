@@ -63,6 +63,15 @@ def min_max(t, x, t_start, t_end):
     return [x_min, x_max]
 
 
+def to_db(x, vin=1.0):
+    return 20 * np.log10(np.abs(x) / np.abs(vin)).real
+
+def to_degree(x, vin=1.0):
+    return np.angle(x/vin, deg=True)
+
+def interp_at(x_arr, y_arr, x_target):
+    return np.interp(x_target, x_arr, y_arr)
+
 def cross_over_points(t, x, t_start, t_end, x0):
     """
     Find times where x crosses x0.

@@ -101,10 +101,10 @@ def _parse_ac(binary_data, variables, num_vars, num_points):
         real = matrix[:, 2*i]
         imag = matrix[:, 2 * i + 1]
 
-        if var=="frequence":
+        if var=="frequency":
             data[var] = real
         else:
-            data[var] = real + 1j + imag
+            data[var] = real + 1j * imag
     
     return data
 
