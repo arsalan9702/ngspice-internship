@@ -1,0 +1,9 @@
+RC Transient Circuit
+Vin in 0 PULSE(0 5 0 1n 1n $PULSE_WIDTH $PERIOD)
+R1 in out $R
+C1 out 0 $C
+
+.TRAN $TSTEP $TEND $TSTART
+
+.SAVE $SAVE_VARS
+.END

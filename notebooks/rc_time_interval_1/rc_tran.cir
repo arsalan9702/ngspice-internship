@@ -1,0 +1,9 @@
+RC Transient Circuit
+Vin in 0 PULSE(0 5 0 1n 1n 0.00500000 0.01000000)
+R1 in out 1000
+C1 out 0 1.00e-06
+
+.TRAN 0.00001000 0.03000000 0.01000000
+
+.SAVE v(in) v(out)
+.END
