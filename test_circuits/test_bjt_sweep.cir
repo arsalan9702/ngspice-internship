@@ -1,0 +1,11 @@
+BJT Output Characteristics
+Vce vce 0 DC 0
+Ib  base 0 DC 0
+Q1  vce base 0 BC547
+
+.MODEL BC547 NPN(Is=1e-14 Bf=200 Vaf=100)
+
+.DC Vce 0 10 0.1 Ib 50u 60u 10u
+
+.SAVE i(Vce) i(Ib)
+.END

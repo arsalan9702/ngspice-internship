@@ -148,7 +148,7 @@ def _parse_all_plots(raw_path: str) -> dict:
             data = _parse_op(binary_data, variables, num_vars, num_points)
         elif 'transient' in plotname_lower:
             data = _parse_tran(binary_data, variables, num_vars, num_points)
-        elif 'ac' in plotname_lower or flags == 'complex':
+        elif plotname_lower in ('ac analysis', 'ac transfer characteristic') or flags == 'complex':
             data = _parse_ac(binary_data, variables, num_vars, num_points)
         else:
             data = _parse_tran(binary_data, variables, num_vars, num_points)
@@ -209,6 +209,27 @@ class slv:
             return 'op'
         else:
             return 'tran'
+        
+    def get_dc_sweep(self, var:str, n_inner:int, plot:int=0) -> list:
+        """
+        split flat DC nested array into individual curves
+        input format: (.DC inner_var ... outer_var ...)
+        all points are written to a single flat array
+        e.g. 101 VCE points x 4IB steps = 404 total points
+        """
+
+        flat = self.get_array(var, plot=plot)
+        total = len(flat)
+
+        if total%n_inner!=0:
+            raise ValueError(
+                f'Total points ({total}) is not divisible by n_inner ({n_inner}). '
+                f'Check n_inner value'
+            )
+        
+        n_outer = total//n_inner
+        curves = [flat[i*n_inner : (i+1)*n_inner] for i in range(n_outer)]
+        return curves
     
 
         

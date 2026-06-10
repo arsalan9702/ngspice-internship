@@ -1,0 +1,11 @@
+BJT Output Characteristics
+Vce vce 0 DC $VCE_MAX
+Ib  0 base DC $IB
+Q1  vce base 0 BC547
+
+.MODEL BC547 NPN(Is=1e-14 Bf=200 Vaf=100)
+
+.DC Vce $VCE_START $VCE_MAX $VCE_STEP Ib $IB_START $IB_STOP $IB_STEP
+
+.SAVE $SAVE_VARS
+.END
