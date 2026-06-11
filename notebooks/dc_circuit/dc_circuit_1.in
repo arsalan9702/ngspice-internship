@@ -1,0 +1,10 @@
+DC Circuit 1
+Vs  A  0  DC 4.0
+R1  A  B  5
+R2  B  0  10
+R3  B  C  5
+R4  C  0  5
+Is  0  C  DC 2
+.SAVE v(a) v(b) v(c)
+.OP
+.END
