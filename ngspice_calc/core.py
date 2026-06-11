@@ -1,7 +1,7 @@
 import subprocess
 import numpy as np
 import os
-
+import platform
 import re
 
 def replace_strings_1(src, dst, replacements):
@@ -21,8 +21,24 @@ def replace_strings_1(src, dst, replacements):
 
 def run_ngspice(cir_path:str):  
     raw_path = cir_path.replace('.in', '.raw').replace('.cir', '.raw')
+
+    lib_dir = os.path.dirname(os.path.abspath(__file__))
+    project_dir = os.path.dirname(lib_dir)
+
+    if platform.system() == 'Windows':
+        binary = os.path.join(project_dir, 'bin', 'run_ngspice.exe')
+    else:
+        binary = os.path.join(project_dir, 'bin', 'run_ngspice')
+        os.chmod(binary, 0o755)
+
+    if not os.path.exists(binary):
+        raise FileNotFoundError(
+            f'ngspice binary not found at {binary}'
+            f'make sure the bin/ folder is present'
+        )
+
     result = subprocess.run(
-        ['ngspice', '-b', '-r', raw_path, cir_path],
+        [binary, '-b', '-r', raw_path, cir_path],
         capture_output=True, text=True
     )
     print(result.stdout)
