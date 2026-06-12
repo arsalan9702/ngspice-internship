@@ -1,0 +1,21 @@
+555 Astable Mode
+.include 555.cir
+
+Vcc vcc 0 DC $VCC
+
+Ra  vcc dis $RA
+Rb  dis thr $RB
+C1  thr 0   $C
+Cc  con 0   10n
+
+.ic v(thr)=0
+
+*   gnd trig out rst  con  thr  dis  vcc
+X1  0   thr  out vcc  con  thr  dis  vcc  555
+
+.OPTIONS reltol=1e-3 abstol=1e-6 vntol=1e-4 itl4=100
+
+.SAVE v(out) v(thr)
+
+.TRAN $TSTEP $TEND
+.END
