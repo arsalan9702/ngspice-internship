@@ -8,5 +8,6 @@ setup(
         'numpy',
         'matplotlib',
         'schemdraw',
+        'py7zr',
     ],
 )
