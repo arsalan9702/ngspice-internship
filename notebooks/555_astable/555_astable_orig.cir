@@ -17,5 +17,5 @@ X1  0   thr  out vcc  con  thr  dis  vcc  555
 
 .SAVE v(out) v(thr)
 
-.TRAN $TSTEP $TEND
+.TRAN $TSTEP $TEND $TSTART
 .END

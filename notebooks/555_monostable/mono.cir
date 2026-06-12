@@ -1,0 +1,22 @@
+555 Monostable Mode
+.include 555.cir
+
+Vcc vcc 0 DC 5.0
+
+* Control voltage bypass
+Cc con 0 10n
+
+* Trigger pulse
+Vtrig trig 0 PULSE(5.0 0 2.200000e+00 1u 1u 5.000000e-02 5.500000e+00)
+
+* Timing network
+Rt vcc timing 1.00e+05
+Ct timing 0 1.00e-05 IC=0
+
+*                gnd trig out rst con thr    dis    vcc
+X1              0   trig out vcc con timing timing vcc 555
+
+.SAVE v(out) v(timing) v(trig)
+
+.TRAN 2.200000e-03 5.500000e+00 UIC
+.END

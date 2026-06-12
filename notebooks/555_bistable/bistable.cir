@@ -1,0 +1,26 @@
+555 Bistable Mode
+.include 555.cir
+
+Vcc vcc 0 DC 5.0
+
+Cc con 0 10n
+
+* Set pulse
+Vset trig 0 PULSE(5.0 0 2.000000e-02 1u 1u 5.000000e-03 1.000000e-01)
+
+* Reset pulse
+Vrst rst 0 PULSE(5.0 0 6.000000e-02 1u 1u 5.000000e-03 1.000000e-01)
+
+* Disable threshold comparator
+Vthr thr 0 DC 0
+
+* Prevent floating discharge node
+Rdummy dis 0 1Meg
+
+*   gnd trig out rst con thr dis vcc
+X1 0 trig out rst con thr dis vcc 555
+
+.SAVE v(out) v(trig) v(rst)
+
+.TRAN 5.000000e-05 1.000000e-01
+.END

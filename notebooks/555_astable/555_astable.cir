@@ -17,5 +17,5 @@ X1  0   thr  out vcc  con  thr  dis  vcc  555
 
 .SAVE v(out) v(thr)
 
-.TRAN 4.166667e-04 2.083333e+00
+.TRAN 4.166667e-04 2.083333e+00 1.458333e+00
 .END
