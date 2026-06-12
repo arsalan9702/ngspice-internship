@@ -1,0 +1,9 @@
+DC Circuit 3 — Max Power Transfer
+Vs1  B  0  DC  10
+R1   A  B  8
+Vs2  C  0  DC  5
+R2   A  C  $R2
+RL   A  0  $RL
+.SAVE v(a) i(Vs1) i(Vs2)
+.DC RL 0.01 100 0.05
+.END

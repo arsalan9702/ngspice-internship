@@ -1,0 +1,7 @@
+RC Circuit Time Domain
+Vin  in  0  SIN(0 1.0 80.0)
+R1   in  out  1000.0
+C1   out  0   1.00e-06  IC=0
+.SAVE v(in) v(out)
+.TRAN 1.250000e-05 6.250000e-02  UIC
+.END

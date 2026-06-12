@@ -1,0 +1,7 @@
+RC High-Pass Filter
+Vin  in  0  AC  1
+C1   in  out  1.00e-06
+R1   out  0   1000.0
+.SAVE v(in) v(out)
+.AC DEC 100 1 1.00e+06
+.END
