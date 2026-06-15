@@ -1,0 +1,10 @@
+RLC Parallel Circuit - Phasor Locus vs C
+Vs    a    0    AC  100  0
+VR    a    b1   0
+R1    b1   b    20
+L1    b    0    0.02
+VC    a    nc   0
+C1    nc   0     6.0000E-05
+.SAVE v(a) v(b) i(vs) i(vr) i(vc)
+.AC LIN 1 159.154943 159.154943
+.END

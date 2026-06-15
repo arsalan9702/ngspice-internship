@@ -19,30 +19,37 @@ def replace_strings_1(src, dst, replacements):
     with open(dst, "w") as f:
         f.write(content)
 
-def run_ngspice(cir_path:str):  
+def run_ngspice(cir_path: str):
     raw_path = cir_path.replace('.in', '.raw').replace('.cir', '.raw')
-
-    lib_dir = os.path.dirname(os.path.abspath(__file__))
-    project_dir = os.path.dirname(lib_dir)
-
-    if platform.system() == 'Windows':
-        binary = os.path.join(project_dir, 'bin', 'run_ngspice.exe')
-    else:
-        binary = os.path.join(project_dir, 'bin', 'run_ngspice')
-        os.chmod(binary, 0o755)
-
-    if not os.path.exists(binary):
-        raise FileNotFoundError(
-            f'ngspice binary not found at {binary}'
-            f'make sure the bin/ folder is present'
+    
+    system = platform.system()   # returns 'Linux' or 'Windows'
+    
+    if system == 'Windows':
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        ngspice_cmd = os.path.abspath(
+         os.path.join(base_dir, '..', 'bin', 'Spice64', 'bin', 'ngspice.exe')
         )
-
+        if not os.path.exists(ngspice_cmd):
+            print('ngspice.exe not found. Running install_ngspice.py...')
+            install_script = os.path.abspath(
+                os.path.join(base_dir, '..', 'install_ngspice.py')
+            )
+            subprocess.run(['python', install_script], check=True)
+            if not os.path.exists(ngspice_cmd):
+                raise FileNotFoundError(
+                'Installation failed. ngspice.exe still not found. '
+                'Please run install_ngspice.py manually.'
+            )
+    else:
+        # Linux: ngspice installed system-wide
+        ngspice_cmd = 'ngspice'
+    
     result = subprocess.run(
-        [binary, '-b', '-r', raw_path, cir_path],
+        [ngspice_cmd, '-b', '-r', raw_path, cir_path],
         capture_output=True, text=True
     )
     print(result.stdout)
-    if result.returncode!=0:
+    if result.returncode != 0:
         print(result.stderr)
         raise RuntimeError(f'ngspice failed on {cir_path}')
     return raw_path
