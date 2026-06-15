@@ -1,0 +1,21 @@
+3-bit Ripple Counter
+Vclk clk_a 0 PULSE(0 5 0 1n 1n 5.000000e-07 1.000000e-06)
+
+Aclk [clk_a] [clk_d] ADC1
+.model ADC1 adc_bridge(in_low=0.8 in_high=2.0)
+
+.model DFF1 d_dff(ic=0 clk_delay=10n rise_delay=10n fall_delay=10n)
+
+A1 q0b_d clk_d null null q0_d q0b_d DFF1
+A2 q1b_d q0_d  null null q1_d q1b_d DFF1
+A3 q2b_d q1_d  null null q2_d q2b_d DFF1
+
+Aq0 [q0_d] [q0] DAC1
+Aq1 [q1_d] [q1] DAC1
+Aq2 [q2_d] [q2] DAC1
+.model DAC1 dac_bridge(out_low=0 out_high=5 out_undef=2.5 t_rise=1n t_fall=1n)
+
+.SAVE v(clk_a) v(q0) v(q1) v(q2)
+
+.TRAN 5.000000e-09 1.600000e-05
+.END

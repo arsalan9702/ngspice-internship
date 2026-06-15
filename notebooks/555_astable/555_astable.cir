@@ -1,0 +1,21 @@
+555 Astable Mode
+.include 555.cir
+
+Vcc vcc 0 DC 5.0
+
+Ra  vcc dis 1.00e+04
+Rb  dis thr 1.00e+04
+C1  thr 0   1.00e-05
+Cc  con 0   10n
+
+.ic v(thr)=0
+
+*   gnd trig out rst  con  thr  dis  vcc
+X1  0   thr  out vcc  con  thr  dis  vcc  555
+
+.OPTIONS reltol=1e-3 abstol=1e-6 vntol=1e-4 itl4=100
+
+.SAVE v(out) v(thr)
+
+.TRAN 4.166667e-04 2.083333e+00 1.458333e+00
+.END
