@@ -131,7 +131,91 @@ def _parse_ac(binary_data, variables, num_vars, num_points):
     
     return data
 
+def _parse_ascii(raw_bytes: bytes) -> list:
+    import re
 
+    def _extract_numbers(s: str) -> list:
+        """Extract all floats including comma-separated complex pairs."""
+        s = s.strip()
+        results = []
+        # split by comma first to separate real,imag pairs
+        parts = s.split(',')
+        for part in parts:
+            nums = re.findall(r'[+-]?[\d]+\.[\d]+[eE][+-][\d]+', part)
+            results.extend(nums)
+        return results
+
+    text = raw_bytes.decode('latin-1')
+    plots = []
+
+    sections = re.split(r'(?=Plotname:)', text)
+
+    for section in sections:
+        if not section.strip():
+            continue
+
+        header_end = section.find('Values:')
+        if header_end == -1:
+            continue
+
+        header_text = section[:header_end]
+        values_text = section[header_end + len('Values:'):]
+
+        variables, num_vars, num_points, flags, plotname = _parse_header(header_text)
+
+        if not variables:
+            continue
+
+        is_complex = (flags == 'complex')
+        data = {var: [] for var in variables}
+
+        lines = [l.strip() for l in values_text.strip().splitlines() if l.strip()]
+
+        i = 0
+        while i < len(lines):
+            parts = lines[i].split()
+
+            if len(parts) >= 1 and parts[0].lstrip('-').isdigit():
+                # rest of first line after index
+                rest = lines[i][len(parts[0]):].strip()
+               
+                # collect all value lines for this point
+                all_raw = [rest]
+                j = i + 1
+                while j < len(lines):
+                    next_parts = lines[j].split()
+                    if len(next_parts) >= 1 and next_parts[0].lstrip('-').isdigit():
+                        break
+                    all_raw.append(lines[j])
+                    j += 1
+
+                # parse each line as one variable
+                for v_idx, var in enumerate(variables):
+                    if v_idx < len(all_raw):
+                        nums = _extract_numbers(all_raw[v_idx])
+                        try:
+                            if is_complex and len(nums) >= 2:
+                                # real + imaginary
+                                data[var].append(
+                                    float(nums[0]) + 1j * float(nums[1])
+                                )
+                            else:
+                                data[var].append(float(nums[0]) if nums else 0.0)
+                        except (ValueError, IndexError):
+                            data[var].append(0.0)
+
+                i = j
+            else:
+                i += 1
+
+        # convert to numpy arrays
+        for var in variables:
+            data[var] = np.array(data[var])
+
+        plots.append({'plotname': plotname, 'data': data})
+
+    return plots
+    
 def _parse_all_plots(raw_path: str) -> dict:
     """
     Detects analysis type from header and dispatches to the right parser
@@ -141,6 +225,9 @@ def _parse_all_plots(raw_path: str) -> dict:
     """
     with open(raw_path, 'rb') as f:
         raw = f.read()
+
+    if b'Binary:' not in raw and b'Values:' in raw:
+        return _parse_ascii(raw)
 
     plot_positions = []
     search_start=0
