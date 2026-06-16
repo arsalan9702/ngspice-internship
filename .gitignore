@@ -2,4 +2,7 @@
 .venv/
 ngspice_calc.egg-info/
 jupyter_gseim/
-bin/
+bin/*.raw
+*.png
+**/__pycache__/
+*.pyc
